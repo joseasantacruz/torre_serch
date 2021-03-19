@@ -14,13 +14,12 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  display: flex;
+  background-color: #27292D !important;
+  color: rgba(255, 255, 255, 0.90);
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -36,15 +35,37 @@
   }
 }
 .App-footer {
-  background-color: #282c34;
+  background-color: #27292D !important;
+  color: rgba(255, 255, 255, 0.90);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .title {
    text-align: center;
    color: white;
 }
+
+.nav-link {
+    padding: 3%;
+    float: right;
+    border-radius: 10px;
+    border-color: #333;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 25%;
+
+}
+.menu-header {
+    padding: 0 8px;
+  display: flex;
+}
+
+.boton-header {
+    padding-left: 60%;
+    display: flex;
+      }

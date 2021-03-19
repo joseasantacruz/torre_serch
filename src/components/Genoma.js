@@ -1,14 +1,12 @@
 import './App.css';
-
-function App() {
+function Genoma() {
   return (
     <div className="App">
          <h1 className="title">
-            Torre Search body
+            Genoma panel
          </h1>
-
     </div>
   );
 }
 
-export default App;
+export default Genoma;
