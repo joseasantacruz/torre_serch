@@ -13,8 +13,7 @@ export function SearchPeople(props) {
       size: 0,
       aggregate: true
   })
-
-  
+  const [limit, setLimit] = useState(5)
   const [filters, setFilters] = useState( { })
   const isSmall = useMediaQuery('only screen and (max-width: 768px)');
  
@@ -39,12 +38,16 @@ export function SearchPeople(props) {
                         onChange={e => setFilters({...filters, remoter: e})}  />
                   </Card>
                   <Card title="Skill" className="card-style"> 
-                    <SearchFilter list={result?.aggregators?.skill || []}
-                        onChange={e => setFilters({...filters, skill: e})}  />
+                    <SearchFilterLimit list={result?.aggregators?.skill || []}
+                        onChange={e => setFilters({...filters, skill: e})}  
+                        limit={limit} />  
+                        <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
+                        {limit>5 &&   
+                          <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
                   </Card>
                   <Card title="Compensation Range" className="card-style"> 
                     <SearchFilter list={result?.aggregators?.compensationrange || []}
-                        onChange={e => setFilters({...filters, compensationrange: e})}  />
+                        onChange={e => setFilters({...filters, compensationrange: e})}  />    
                   </Card>
                 </Col>
             </Layout.Sider>} 
@@ -52,7 +55,7 @@ export function SearchPeople(props) {
                     {isSmall && <Row>
                         <Col xs={{span: 24}}>
                             <Collapse defaultActiveKey={['2']} bordered={false}>
-                                <Collapse.Panel header="More Filters" key="1">
+                                <Collapse.Panel header="See Filters" key="1">
                                   <Col xs={{span: 24}} style={{padding: 5}}> 
                                     <Card title="Open To" className="card-style"> 
                                       <SearchFilter list={result?.aggregators?.opento || []}
@@ -63,12 +66,16 @@ export function SearchPeople(props) {
                                           onChange={e => setFilters({...filters, remoter: e})}  />
                                     </Card>
                                     <Card title="Skill" className="card-style"> 
-                                      <SearchFilter list={result?.aggregators?.skill || []}
-                                          onChange={e => setFilters({...filters, skill: e})}  />
+                                      <SearchFilterLimit list={result?.aggregators?.skill || []}
+                                          onChange={e => setFilters({...filters, skill: e})} 
+                                          limit={limit} />  
+                                          <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
+                                          {limit>5 &&   
+                                            <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>}   
                                     </Card>
                                     <Card title="Compensation Range" className="card-style"> 
                                       <SearchFilter list={result?.aggregators?.compensationrange || []}
-                                          onChange={e => setFilters({...filters, compensationrange: e})}  />
+                                          onChange={e => setFilters({...filters, compensationrange: e})}/>
                                     </Card>
                                   </Col>
                                 </Collapse.Panel>
@@ -111,6 +118,17 @@ function ResultComponent(props) {
 
 function SearchFilter(props) {
   const options = props.list.map(item  => {
+      return {
+          label: `${item.value} (${item.total})`, value: item.value
+      }
+  })
+  return <Checkbox.Group  options={options} 
+          onChange={props.onChange} />
+}
+
+function SearchFilterLimit(props) {
+  console.log(".limit: ", props.limit)
+  const options = props.list.slice(0, props.limit).map(item  => {
       return {
           label: `${item.value} (${item.total})`, value: item.value
       }

@@ -15,6 +15,7 @@ export function SearchJobs(props) {
   })
 
   
+  const [limit, setLimit] = useState(5)
   const [filters, setFilters] = useState( { })
   const isSmall = useMediaQuery('only screen and (max-width: 768px)');
  
@@ -31,12 +32,16 @@ export function SearchJobs(props) {
                 </Typography.Title>
                 <Col xs={{span: 24}} style={{padding: 5}}> 
                   <Card title="Remoter" className="card-style"> 
-                    <SearchFilter list={result?.aggregators?.remoter || []}
-                        onChange={e => setFilters({...filters, remoter: e})}  />
+                    <SearchFilter list={result?.aggregators?.remote || []}
+                        onChange={e => setFilters({...filters, remote: e})}  />
                   </Card>
                   <Card title="Organization" className="card-style"> 
-                    <SearchFilter list={result?.aggregators?.organization || []}
-                        onChange={e => setFilters({...filters, organization: e})}  />
+                    <SearchFilterLimit list={result?.aggregators?.organization || []}
+                        onChange={e => setFilters({...filters, organization: e})}  
+                        limit={limit} />  
+                        <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
+                        {limit>5 &&   
+                          <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
                   </Card>
                 </Col>
             </Layout.Sider>} 
@@ -47,12 +52,16 @@ export function SearchJobs(props) {
                                 <Collapse.Panel header="More Filters" key="1">
                                   <Col xs={{span: 24}} style={{padding: 5}}> 
                                     <Card title="Remoter" className="card-style"> 
-                                      <SearchFilter list={result?.aggregators?.remoter || []}
-                                          onChange={e => setFilters({...filters, remoter: e})}  />
+                                      <SearchFilter list={result?.aggregators?.remote || []}
+                                          onChange={e => setFilters({...filters, remote: e})}  />
                                     </Card>
                                     <Card title="Organization" className="card-style"> 
-                                      <SearchFilter list={result?.aggregators?.organization || []}
-                                          onChange={e => setFilters({...filters, organization: e})}  />
+                                      <SearchFilterLimit list={result?.aggregators?.organization || []}
+                                          onChange={e => setFilters({...filters, organization: e})}  
+                                          limit={limit} />  
+                                          <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
+                                          {limit>5 &&   
+                                            <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
                                     </Card>
                                   </Col>
                                 </Collapse.Panel>
@@ -97,6 +106,18 @@ function ResultComponent(props) {
 
 function SearchFilter(props) {
   const options = props.list.map(item  => {
+      return {
+          label: `${item.value} (${item.total})`, value: item.value
+      }
+  })
+  return <Checkbox.Group  options={options} 
+          onChange={props.onChange} />
+}
+
+
+function SearchFilterLimit(props) {
+  console.log(".limit: ", props.limit)
+  const options = props.list.slice(0, props.limit).map(item  => {
       return {
           label: `${item.value} (${item.total})`, value: item.value
       }
