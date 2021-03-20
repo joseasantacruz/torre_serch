@@ -47,7 +47,7 @@ export function SearchPeople() {
                                             innerClass={{
                                                 input: 'fts-search-input'
                                             }}
-                                            placeholder="Search by name"
+                                            placeholder="Search people"
                                             dataField={['name', 'document']}/>
                             </div>
                         </Card>
@@ -67,23 +67,41 @@ export function SearchPeople() {
 function Filter() {             
   return <Col xs={{span: 24}} style={{padding: 5}}> 
   <Card title="Desired Salary" className="card-style">
-            <MultiList componentId="Salary"
-                       dataField="charges.keyword"
-                       queryFormat="or"
-                       showCount
-                       URLParams
-                       showSearch={false}
-                       react={{
-                           and: ['query', 'filter 2', 'filter 3', 'filter 4'],
-                       }}
-            />
-        </Card>
-  <Card title="filter 2" className="card-style" >
-      
+    <MultiList componentId="Salary"
+                dataField="charges.keyword"
+                queryFormat="or"
+                showCount
+                URLParams
+                showSearch={false}
+                react={{
+                    and: ['query', 'Opento', 'Locations', 'filter 4'],
+                }}
+    />
+  </Card>
+  <Card title="Open to" className="card-style" >
+    <MultiList componentId="Opento"
+                dataField="charges.keyword"
+                queryFormat="or"
+                showCount
+                URLParams
+                showSearch={false}
+                react={{
+                    and: ['query', 'Salary', 'Locations', 'filter 4'],
+                }}
+    />
   </Card>
 
-  <Card title="filter 3" className="card-style" >
-       
+  <Card title="Locations" className="card-style" >
+    <MultiList componentId="Locations"
+                dataField="charges.keyword"
+                queryFormat="or"
+                showCount
+                URLParams
+                showSearch={false}
+                react={{
+                    and: ['query', 'Salary', 'Opento', 'filter 4'],
+                }}
+    />
   </Card>
   <Card title="filter 4"  className="card-style">
        
