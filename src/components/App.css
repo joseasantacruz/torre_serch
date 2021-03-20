@@ -1,6 +1,11 @@
 .App {
   text-align: center;
   color: rgba(255, 255, 255, 0.90)!important;
+  border-style: solid;
+  border-radius: 0px;
+  border-color: black;
+  border-width: 1px;
+  border-left: 0px;
 }
 
 .App-logo {
@@ -105,10 +110,7 @@
 text-align: right;
 padding: 6%;
 }
-
-.content-padding {
-  padding-top: 20px;
-}
+ 
 
 @media (max-width: 600px) {
   .content-padding {
@@ -174,8 +176,17 @@ padding: 6%;
 }
 
 .ant-layout-sider{
-  width: 300px!important;
-  max-width: 300px!important;
+  width: 20%!important;
+  max-width: 20%!important;
+  min-width: 20vw!important;
+  background: #27292d;
+  overflow: 'auto';
+  height: '100vh';
+  position: 'fixed';
+  left: 0;
+  height: calc(100vh - 200px);
+  overflow: auto;
+
 }
 .ant-card-head-title{
 color: white;
@@ -195,4 +206,19 @@ font-size:20px;
   background: none;
   border: 0;
   font-size:17px;
+  }
+
+  .layout-div {
+    display: -webkit-box
+  }
+
+  .site-layout{
+    width: 78%!important;
+    max-width: 78%!important; 
+    overflow: 'auto'; 
+    position: 'fixed';
+    padding-left: 2%;
+    padding-top: 5px;
+    height: calc(100vh - 205px);
+    overflow: auto;
   }

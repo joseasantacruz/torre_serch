@@ -27,7 +27,8 @@ export function SearchJobs(props) {
   return (
     <div className="App">  
       <Layout>
-            {!isSmall && <Layout.Sider width="20vw">
+            {!isSmall &&  <div className="layout-div">
+              <Layout.Sider >
                 <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20, color: 'white',fontSize: '20px'  }}>
                     Jobs Filters
                 </Typography.Title>
@@ -65,7 +66,27 @@ export function SearchJobs(props) {
                         onChange={e => setFilters({...filters, status: e})}  />
                   </Card>
                 </Col>
-            </Layout.Sider>} 
+            </Layout.Sider>
+              <Layout className="site-layout" >
+                <Row  > 
+                  <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                      <div className="fts-search-input-wrapper">
+                        
+                        input to Search jobs
+                      </div>
+                  </Card>
+                </Row>  
+                <Row  > 
+                  <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                      <div className="fts-search-input-wrapper">
+                      Current Filters Row 
+                      </div>
+                  </Card>
+                </Row>  
+
+                <ResultComponent isSmall={isSmall}/>
+              </Layout>
+            </div>} 
                 <Layout.Content className="content-padding" >
                     {isSmall && <Row>
                         <Col xs={{span: 24}}>
@@ -110,21 +131,25 @@ export function SearchJobs(props) {
                                 </Collapse.Panel>
                             </Collapse>
                         </Col>
+                        <Col  > 
+                          <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                              <div className="fts-search-input-wrapper">
+                                
+                                input to Search people
+                              </div>
+                          </Card>
+                        </Col>  
+                        <Col  > 
+                          <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                              <div className="fts-search-input-wrapper">
+                              Current Filters Row 
+                              </div>
+                          </Card>
+                        </Col>  
+
+                        <ResultComponent isSmall={isSmall}/>
                     </Row>}
-                    <Row>
-                        <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                            <div className="fts-search-input-wrapper">
-                             
-                            input to Search jobs
-                              
-                            </div>
-                        </Card>
-                    </Row>
-                    <Row>
-                        Current Filters Row 
-                         
-                    </Row>
-                    <ResultComponent isSmall={isSmall}/>
+                     
                 </Layout.Content> 
           </Layout>
  
@@ -141,6 +166,7 @@ function ResultComponent(props) {
           </Row>
           <Row>
             Results Row 2
+            
           </Row>
           </Col>
       </Card>

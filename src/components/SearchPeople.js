@@ -24,33 +24,54 @@ export function SearchPeople(props) {
   return (
     <div className="App">  
       <Layout>
-            {!isSmall && <Layout.Sider width="20vw">
-                <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20, color: 'white',fontSize: '20px'  }}>
-                    People Filters
-                </Typography.Title>
-                <Col xs={{span: 24}} style={{padding: 5}}> 
-                  <Card title="Open To" className="card-style"> 
-                    <SearchFilter list={result?.aggregators?.opento || []}
-                        onChange={e => setFilters({...filters, opento: e})}  />
+            {!isSmall && <div className="layout-div">
+              <Layout.Sider  >
+                  <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20, color: 'white',fontSize: '20px'  }}>
+                      People Filters
+                  </Typography.Title>
+                  <Col xs={{span: 24}} style={{padding: 5}}> 
+                    <Card title="Open To" className="card-style"> 
+                      <SearchFilter list={result?.aggregators?.opento || []}
+                          onChange={e => setFilters({...filters, opento: e})}  />
+                    </Card>
+                    <Card title="Remote" className="card-style"> 
+                      <SearchFilter list={result?.aggregators?.remoter || []}
+                          onChange={e => setFilters({...filters, remoter: e})}  />
+                    </Card>
+                    <Card title="Skills" className="card-style"> 
+                      <SearchFilterLimit list={result?.aggregators?.skill || []}
+                          onChange={e => setFilters({...filters, skill: e})}  
+                          limit={limit} />  
+                          <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
+                          {limit>5 &&   
+                            <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
+                    </Card>
+                    <Card title="Compensation Ranges" className="card-style"> 
+                      <SearchFilter list={result?.aggregators?.compensationrange || []}
+                          onChange={e => setFilters({...filters, compensationrange: e})}  />    
+                    </Card>
+                  </Col> 
+              </Layout.Sider>
+              <Layout className="site-layout" >
+                <Row  > 
+                  <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                      <div className="fts-search-input-wrapper">
+                        
+                        input to Search people
+                      </div>
                   </Card>
-                  <Card title="Remote" className="card-style"> 
-                    <SearchFilter list={result?.aggregators?.remoter || []}
-                        onChange={e => setFilters({...filters, remoter: e})}  />
+                </Row>  
+                <Row  > 
+                  <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                      <div className="fts-search-input-wrapper">
+                      Current Filters Row 
+                      </div>
                   </Card>
-                  <Card title="Skills" className="card-style"> 
-                    <SearchFilterLimit list={result?.aggregators?.skill || []}
-                        onChange={e => setFilters({...filters, skill: e})}  
-                        limit={limit} />  
-                        <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
-                        {limit>5 &&   
-                          <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
-                  </Card>
-                  <Card title="Compensation Ranges" className="card-style"> 
-                    <SearchFilter list={result?.aggregators?.compensationrange || []}
-                        onChange={e => setFilters({...filters, compensationrange: e})}  />    
-                  </Card>
-                </Col>
-            </Layout.Sider>} 
+                </Row>  
+
+                <ResultComponent isSmall={isSmall}/>
+              </Layout>
+            </div>}
                 <Layout.Content className="content-padding" >
                     {isSmall && <Row>
                         <Col xs={{span: 24}}>
@@ -81,20 +102,24 @@ export function SearchPeople(props) {
                                 </Collapse.Panel>
                             </Collapse>
                         </Col>
-                    </Row>}
-                    <Row>
-                        <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                            <div className="fts-search-input-wrapper">
-                             
-                             input to Search people
-                            </div>
-                        </Card>
-                    </Row>
-                    <Row>
-                        Current Filters Row 
-                         
-                    </Row>
-                    <ResultComponent isSmall={isSmall}/>
+                        <Col  > 
+                          <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                              <div className="fts-search-input-wrapper">
+                                
+                                input to Search people
+                              </div>
+                          </Card>
+                        </Col>  
+                        <Col  > 
+                          <Card className="card-style card-fts-search"  style={{width: '100%'}}>
+                              <div className="fts-search-input-wrapper">
+                              Current Filters Row 
+                              </div>
+                          </Card>
+                        </Col>  
+
+                        <ResultComponent isSmall={isSmall}/>
+                    </Row>} 
                 </Layout.Content> 
           </Layout> 
       </div>
