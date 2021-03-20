@@ -1,35 +1,76 @@
-import React,{useMemo}  from 'react';
+import React,{useMemo, useEffect, useState}  from 'react';
 import './App.css';
-import {Col, Input, Row, Layout,Typography,Collapse,Card} from 'antd';
+import {Col, Row, Layout,Typography,Collapse,Card,Checkbox} from 'antd';
 import { useHistory } from "react-router-dom";
-import {useMediaQuery} from '@react-hook/media-query'   
-import {
-  DataSearch,
-  MultiList,
-  ReactiveBase 
-} from '@appbaseio/reactivesearch';
-export function SearchPeople() {
+import {useMediaQuery} from '@react-hook/media-query'    
+ 
+export function SearchPeople(props) {
   let history = useHistory();
 
-  const isSmall = useMediaQuery('only screen and (max-width: 768px)');
+  const [result, setResult] = useState()
+  const [params, setParams] = useState( {
+      offset: 0,
+      size: 0,
+      aggregate: true
+  })
 
-  const filter = useMemo(() => <Filter/>, []);
+  
+  const [filters, setFilters] = useState( { })
+  const isSmall = useMediaQuery('only screen and (max-width: 768px)');
+ 
+  useEffect(() =>{
+    doQuery(params,filters)
+        .then(d => setResult(d))
+}, [params,filters])
   return (
-    <div className="App"> 
-    <ReactiveBase url="https://1b7cf0bcaa7d41499e33bdc7d7ef0ce7.us-west1.gcp.cloud.es.io:9243" app="torre-elastic"> 
+    <div className="App">  
       <Layout>
             {!isSmall && <Layout.Sider width="20vw">
-                <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20}}>
-                    Filters
+                <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20, color: 'white',fontSize: '20px'  }}>
+                    People Filters
                 </Typography.Title>
-                {filter}
+                <Col xs={{span: 24}} style={{padding: 5}}> 
+                  <Card title="Open To" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.opento || []}
+                        onChange={e => setFilters({...filters, opento: e})}  />
+                  </Card>
+                  <Card title="Remoter" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.remoter || []}
+                        onChange={e => setFilters({...filters, remoter: e})}  />
+                  </Card>
+                  <Card title="Skill" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.skill || []}
+                        onChange={e => setFilters({...filters, skill: e})}  />
+                  </Card>
+                  <Card title="Compensation Range" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.compensationrange || []}
+                        onChange={e => setFilters({...filters, compensationrange: e})}  />
+                  </Card>
+                </Col>
             </Layout.Sider>} 
                 <Layout.Content className="content-padding" >
                     {isSmall && <Row>
                         <Col xs={{span: 24}}>
                             <Collapse defaultActiveKey={['2']} bordered={false}>
                                 <Collapse.Panel header="More Filters" key="1">
-                                    {filter}
+                                  <Col xs={{span: 24}} style={{padding: 5}}> 
+                                    <Card title="Open To" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.opento || []}
+                                          onChange={e => setFilters({...filters, opento: e})}  />
+                                    </Card>
+                                    <Card title="Remoter" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.remoter || []}
+                                          onChange={e => setFilters({...filters, remoter: e})}  />
+                                    </Card>
+                                    <Card title="Skill" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.skill || []}
+                                          onChange={e => setFilters({...filters, skill: e})}  />
+                                    </Card>
+                                    <Card title="Compensation Range" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.compensationrange || []}
+                                          onChange={e => setFilters({...filters, compensationrange: e})}  />
+                                    </Card>
+                                  </Col>
                                 </Collapse.Panel>
                             </Collapse>
                         </Col>
@@ -38,77 +79,21 @@ export function SearchPeople() {
                         <Card className="card-style card-fts-search"  style={{width: '100%'}}>
                             <div className="fts-search-input-wrapper">
                              
-                             <DataSearch componentId="query"
-                                            URLParams
-                                            enableQuerySuggestions={false}
-                                            enablePopularSuggestions={false}
-                                            debounce={300}
-                                            autosuggest={false}
-                                            innerClass={{
-                                                input: 'fts-search-input'
-                                            }}
-                                            placeholder="Search people"
-                                            dataField={['name', 'document']}/>
+                             input to Search people
                             </div>
                         </Card>
                     </Row>
                     <Row>
-                        Current Filters Row
+                        Current Filters Row 
+                         
                     </Row>
                     <ResultComponent isSmall={isSmall}/>
                 </Layout.Content> 
-          </Layout>
-
-    </ReactiveBase>
+          </Layout> 
       </div>
   );
-}
- 
-function Filter() {             
-  return <Col xs={{span: 24}} style={{padding: 5}}> 
-  <Card title="Desired Salary" className="card-style">
-    <MultiList componentId="Salary"
-                dataField="charges.keyword"
-                queryFormat="or"
-                showCount
-                URLParams
-                showSearch={false}
-                react={{
-                    and: ['query', 'Opento', 'Locations', 'filter 4'],
-                }}
-    />
-  </Card>
-  <Card title="Open to" className="card-style" >
-    <MultiList componentId="Opento"
-                dataField="charges.keyword"
-                queryFormat="or"
-                showCount
-                URLParams
-                showSearch={false}
-                react={{
-                    and: ['query', 'Salary', 'Locations', 'filter 4'],
-                }}
-    />
-  </Card>
-
-  <Card title="Locations" className="card-style" >
-    <MultiList componentId="Locations"
-                dataField="charges.keyword"
-                queryFormat="or"
-                showCount
-                URLParams
-                showSearch={false}
-                react={{
-                    and: ['query', 'Salary', 'Opento', 'filter 4'],
-                }}
-    />
-  </Card>
-  <Card title="filter 4"  className="card-style">
-       
-  </Card>
-</Col>
-}
-function ResultComponent(props: { isSmall: boolean }) {
+} 
+function ResultComponent(props) {
 
   return <Col xs={{span: 24}}>
       <Card title="Results" className="card-style">
@@ -123,3 +108,51 @@ function ResultComponent(props: { isSmall: boolean }) {
       </Card>
   </Col>
 } 
+
+function SearchFilter(props) {
+  const options = props.list.map(item  => {
+      return {
+          label: `${item.value} (${item.total})`, value: item.value
+      }
+  })
+  return <Checkbox.Group  options={options} 
+          onChange={props.onChange} />
+}
+
+/* 
+{
+
+  offset::::::::::::::::::::::::::::::::::::::    number
+  size: nubmer
+  aggreate: boolean,
+  openTo: Array de strings
+
+  other: {
+
+  }
+}
+
+*/
+function doQuery(params,filters) {
+
+  console.log("filters:", filters)
+
+  var requestOptions = {
+      method: 'POST',
+      redirect: 'follow',
+     // body: JSON.stringify({ agregamePorOpen: filters.openTo })
+    };
+    
+  return fetch(`https://search.torre.co/people/_search/?offset=${params.offset}&size=${params.size}&aggregate=${params.aggregate}`, requestOptions)
+      .then(response => response.json())
+      .catch(error => console.log('error', error));
+}
+
+/*function CurrentSelecteFilter(props) {
+  const options = props.list.map(item  => {
+      return {
+          label: `${item}`, value: item
+      }
+  })
+  return <Checkbox.Group style={{ width: '100%' }} options={options}   />
+}*/

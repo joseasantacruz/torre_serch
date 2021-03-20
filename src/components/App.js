@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import {SearchJobs} from './SearchJobs'
+import {SearchJobs} from './SearchJobs' 
 import {SearchPeople} from './SearchPeople'
 
 export default function App() {

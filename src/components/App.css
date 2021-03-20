@@ -117,10 +117,10 @@ padding: 6%;
 }
 
 .card-style {
-  margin: 10px 0;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(227, 232, 236, 1);
+  margin: 10px 0; 
+  color: #CDDC39;
 }
+
 .card-style .fts-search-input {
   border: none;
   background-color: white;
@@ -133,13 +133,9 @@ padding: 6%;
   border-color: #002E4D;
   border-width: 2px;
 }
-
-.card-style {
-  margin: 10px 0;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(227, 232, 236, 1);
+.card-style .title { 
+  color: white;
 }
-
 
 @media (max-width: 600px) {
   .small-card .ant-descriptions-title {
@@ -168,4 +164,21 @@ padding: 6%;
 .title-layout-content {
   color: rgba(0, 52, 91, 1) !important;
   padding: 10px 0;
+}
+
+.ant-checkbox-group-item {
+  display: block;
+  margin-right: 0;
+  text-align: left;
+}
+
+.ant-layout-sider{
+  width: 300px!important;
+  max-width: 300px!important;
+}
+.ant-card-head-title{
+color: white;
+text-align: left;
+padding: 5px;
+font-size:20px;
 }
