@@ -33,11 +33,11 @@ export function SearchPeople(props) {
                     <SearchFilter list={result?.aggregators?.opento || []}
                         onChange={e => setFilters({...filters, opento: e})}  />
                   </Card>
-                  <Card title="Remoter" className="card-style"> 
+                  <Card title="Remote" className="card-style"> 
                     <SearchFilter list={result?.aggregators?.remoter || []}
                         onChange={e => setFilters({...filters, remoter: e})}  />
                   </Card>
-                  <Card title="Skill" className="card-style"> 
+                  <Card title="Skills" className="card-style"> 
                     <SearchFilterLimit list={result?.aggregators?.skill || []}
                         onChange={e => setFilters({...filters, skill: e})}  
                         limit={limit} />  
@@ -45,7 +45,7 @@ export function SearchPeople(props) {
                         {limit>5 &&   
                           <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
                   </Card>
-                  <Card title="Compensation Range" className="card-style"> 
+                  <Card title="Compensation Ranges" className="card-style"> 
                     <SearchFilter list={result?.aggregators?.compensationrange || []}
                         onChange={e => setFilters({...filters, compensationrange: e})}  />    
                   </Card>
@@ -61,11 +61,11 @@ export function SearchPeople(props) {
                                       <SearchFilter list={result?.aggregators?.opento || []}
                                           onChange={e => setFilters({...filters, opento: e})}  />
                                     </Card>
-                                    <Card title="Remoter" className="card-style"> 
+                                    <Card title="Remote" className="card-style"> 
                                       <SearchFilter list={result?.aggregators?.remoter || []}
                                           onChange={e => setFilters({...filters, remoter: e})}  />
                                     </Card>
-                                    <Card title="Skill" className="card-style"> 
+                                    <Card title="Skills" className="card-style"> 
                                       <SearchFilterLimit list={result?.aggregators?.skill || []}
                                           onChange={e => setFilters({...filters, skill: e})} 
                                           limit={limit} />  
@@ -73,7 +73,7 @@ export function SearchPeople(props) {
                                           {limit>5 &&   
                                             <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>}   
                                     </Card>
-                                    <Card title="Compensation Range" className="card-style"> 
+                                    <Card title="Compensation Ranges" className="card-style"> 
                                       <SearchFilter list={result?.aggregators?.compensationrange || []}
                                           onChange={e => setFilters({...filters, compensationrange: e})}/>
                                     </Card>

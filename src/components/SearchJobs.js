@@ -15,7 +15,8 @@ export function SearchJobs(props) {
   })
 
   
-  const [limit, setLimit] = useState(5)
+  const [organization_limit, setOrganizationLimit] = useState(5)
+  const [skill_limit, setSkillLimit] = useState(5)
   const [filters, setFilters] = useState( { })
   const isSmall = useMediaQuery('only screen and (max-width: 768px)');
  
@@ -31,17 +32,37 @@ export function SearchJobs(props) {
                     Jobs Filters
                 </Typography.Title>
                 <Col xs={{span: 24}} style={{padding: 5}}> 
-                  <Card title="Remoter" className="card-style"> 
+                  <Card title="Remote" className="card-style"> 
                     <SearchFilter list={result?.aggregators?.remote || []}
                         onChange={e => setFilters({...filters, remote: e})}  />
                   </Card>
-                  <Card title="Organization" className="card-style"> 
+                  <Card title="Organizations" className="card-style"> 
                     <SearchFilterLimit list={result?.aggregators?.organization || []}
                         onChange={e => setFilters({...filters, organization: e})}  
-                        limit={limit} />  
-                        <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
-                        {limit>5 &&   
-                          <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
+                        limit={organization_limit} />  
+                        <button className="button-style" onClick={() => setOrganizationLimit(organization_limit + 10)}> SEE MORE</button>
+                        {organization_limit>5 &&   
+                          <button className="button-style" onClick={() => setOrganizationLimit(organization_limit - 10)}> SEE LESS</button>} 
+                  </Card>
+                  <Card title="Skills" className="card-style"> 
+                    <SearchFilterLimit list={result?.aggregators?.skill || []}
+                        onChange={e => setFilters({...filters, skill: e})}  
+                        limit={skill_limit} />  
+                        <button className="button-style" onClick={() => setSkillLimit(skill_limit + 10)}> SEE MORE</button>
+                        {skill_limit>5 &&   
+                          <button className="button-style" onClick={() => setSkillLimit(skill_limit - 10)}> SEE LESS</button>} 
+                  </Card>
+                  <Card title="Compensation Ranges" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.compensationrange || []}
+                        onChange={e => setFilters({...filters, compensationrange: e})}  />
+                  </Card>
+                  <Card title="Types" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.type || []}
+                        onChange={e => setFilters({...filters, type: e})}  />
+                  </Card>
+                  <Card title="status" className="card-style"> 
+                    <SearchFilter list={result?.aggregators?.status || []}
+                        onChange={e => setFilters({...filters, status: e})}  />
                   </Card>
                 </Col>
             </Layout.Sider>} 
@@ -51,17 +72,39 @@ export function SearchJobs(props) {
                             <Collapse defaultActiveKey={['2']} bordered={false}>
                                 <Collapse.Panel header="More Filters" key="1">
                                   <Col xs={{span: 24}} style={{padding: 5}}> 
-                                    <Card title="Remoter" className="card-style"> 
+                                    <Card title="Remote" className="card-style"> 
                                       <SearchFilter list={result?.aggregators?.remote || []}
                                           onChange={e => setFilters({...filters, remote: e})}  />
                                     </Card>
-                                    <Card title="Organization" className="card-style"> 
+                                    <Card title="Organizations" className="card-style"> 
                                       <SearchFilterLimit list={result?.aggregators?.organization || []}
                                           onChange={e => setFilters({...filters, organization: e})}  
-                                          limit={limit} />  
-                                          <button className="button-style" onClick={() => setLimit(limit + 10)}> SEE MORE</button>
-                                          {limit>5 &&   
-                                            <button className="button-style" onClick={() => setLimit(limit - 10)}> SEE LESS</button>} 
+                                          limit={organization_limit} />  
+                                          <button className="button-style" onClick={() => setOrganizationLimit(organization_limit + 10)}> SEE MORE</button>
+                                          {organization_limit>5 &&   
+                                            <button className="button-style" onClick={() => setOrganizationLimit(organization_limit - 10)}> SEE LESS</button>} 
+                                    </Card>
+                                    <Card title="Skills" className="card-style"> 
+                                      <SearchFilterLimit list={result?.aggregators?.skill || []}
+                                          onChange={e => setFilters({...filters, skill: e})}  
+                                          limit={skill_limit} />  
+                                          <button className="button-style" onClick={() => setSkillLimit(skill_limit + 10)}> SEE MORE</button>
+                                          {skill_limit>5 &&   
+                                            <button className="button-style" onClick={() => setSkillLimit(skill_limit - 10)}> SEE LESS</button>} 
+                                    </Card>
+                                    
+
+                                    <Card title="Compensation Ranges" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.compensationrange || []}
+                                          onChange={e => setFilters({...filters, compensationrange: e})}  />
+                                    </Card>
+                                    <Card title="Types" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.type || []}
+                                          onChange={e => setFilters({...filters, type: e})}  />
+                                    </Card>
+                                    <Card title="status" className="card-style"> 
+                                      <SearchFilter list={result?.aggregators?.status || []}
+                                          onChange={e => setFilters({...filters, status: e})}  />
                                     </Card>
                                   </Col>
                                 </Collapse.Panel>
