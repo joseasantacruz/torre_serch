@@ -299,3 +299,21 @@ text-decoration: none;
   border-radius: 60%;
   padding: 7%;
 }
+.card-result-filter { 
+  color: white;
+  background-color: #27292D;
+  text-align: center; 
+  border-style: solid; 
+  border-color: white;
+  border-width: 1px;  
+  border-radius: 5px;
+  padding: 3px;
+  margin-right: 1%;
+}
+
+.ant-select-selection-overflow{
+  display: flex;
+}
+.ant-select-selection-overflow-item{
+  margin: 1%;
+}

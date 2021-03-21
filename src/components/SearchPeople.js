@@ -1,9 +1,10 @@
 import React,{useMemo, useEffect, useState}  from 'react';
 import './App.css';
-import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image} from 'antd';
+import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image,Select} from 'antd';
 import {TrophyOutlined} from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
-import {useMediaQuery} from '@react-hook/media-query'     
+import {useMediaQuery} from '@react-hook/media-query'   
+const { Option } = Select;   
 
 export function SearchPeople(props) {
   let history = useHistory();
@@ -56,10 +57,9 @@ export function SearchPeople(props) {
               <Layout className="site-layout" > 
                 <Row  > 
                   <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                      <div className="fts-search-input-wrapper">
-                      Current Filters Row 
-                      </div>
-                  </Card>
+                    <FiltersComponent filters={filters || []} setFilters={setFilters}
+                                  onChange={e => setFilters({...filters, status: e})}  />
+                    </Card>
                 </Row>  
 
                 <ResultComponent list={result?.results || []} />
@@ -97,9 +97,8 @@ export function SearchPeople(props) {
                         </Col> 
                         <Col  > 
                           <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                              <div className="fts-search-input-wrapper">
-                              Current Filters Row 
-                              </div>
+                            <FiltersComponent filters={filters || []} setFilters={setFilters}
+                                  onChange={e => setFilters({...filters, status: e})}  />
                           </Card>
                         </Col>  
 
@@ -110,10 +109,46 @@ export function SearchPeople(props) {
       </div>
   );
 } 
+
+
+function FiltersComponent(props) { 
+  console.log(".filters: ", props.filters) 
+  const selected_filters = [];
+  {props.filters.opento!= null && props.filters.opento.map(opt  =>  
+    selected_filters.push(<Option key={'OpenTo:'+ opt}>OpenTo: {opt}</Option>)  )} 
+  {props.filters.remoter!= null && props.filters.remoter.map(opt  =>  
+    selected_filters.push(<Option key={'Remoter:'+ opt}>Remoter: {opt}</Option>)  )}  
+  {props.filters.skill!= null && props.filters.skill.map(opt  =>  
+    selected_filters.push(<Option key={'Skill:'+ opt}>Skill: {opt}</Option>)  )} 
+  {props.filters.compensationrange!= null && props.filters.compensationrange.map(opt  =>  
+    selected_filters.push(<Option key={'Compensation:'+ opt}>Compensation: {opt}</Option>)  )}   
+  const defaultValue = [ "OpenTo:hiring","Remoter:yes" ];
+  //selected_filters.map(filt  =>    defaultValue.push(  filt.key)  )
+  //console.log(".defaultValue: ", defaultValue) 
+  //console.log(".selected_filters: ", selected_filters) 
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+  const options = []; 
+  return <div className="fts-search-input-wrapper"   >
+            <h5 style= {{marginTop: 0}}>Current Filters Row </h5>
+            <Col  style= {{display: 'flex', marginLeft:'3%', color: 'white'}}>
+            <Select
+              mode="multiple"
+              allowClear
+              style={{ width: '100%' }} 
+              defaultValue={defaultValue} 
+              onChange={handleChange}
+              options={selected_filters} 
+              onClear={e => props.setFilters({  })}
+              />   
+            </Col>
+          </div>
+
+}  
  
 function ResultComponent(props) {
-
-  console.log(".result: ", props.list) 
+  //console.log(".result: ", props.list) 
   return <Col xs={{span: 24}}> 
   { props.list.map(item  =>
   <Card   className="card-result"> 
@@ -141,9 +176,8 @@ function ResultComponent(props) {
   )}
   </Col>  
 } 
-
 function OpenToComponet(props) {
-  console.log(".openTo: ", props.list)   
+  //console.log(".openTo: ", props.list)   
   return <Card style={{ width: 300 }}> 
       { props.list.map(opento  =>
       
@@ -155,7 +189,7 @@ function OpenToComponet(props) {
 
 
 function SkillsComponet(props) {
-  console.log(".skills: ", props.list) 
+  //console.log(".skills: ", props.list) 
   var obj = props.list;
   obj.sort((a,b) => b.weight - a.weight); 
   return <Col  style= {{display: 'flex', marginLeft:'10%'}}> 
@@ -174,7 +208,7 @@ function SkillsComponet(props) {
 }
 
 function SearchFilter(props) {
-  console.log(".filters: ", props.list)
+  //console.log(".filters: ", props.list)
   const options = props.list.map(item  => {
       return {
           label: `${item.value} (${item.total})`, value: item.value
@@ -185,7 +219,7 @@ function SearchFilter(props) {
 }
 
 function SearchFilterLimit(props) {
-  console.log(".limit: ", props.limit)
+  //console.log(".limit: ", props.limit)
   const options = props.list.slice(0, props.limit).map(item  => {
       return {
           label: `${item.value} (${item.total})`, value: item.value

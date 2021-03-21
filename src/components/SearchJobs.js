@@ -1,9 +1,10 @@
 import React,{useMemo, useEffect, useState}  from 'react';
 import './App.css';
-import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image} from 'antd';
+import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image,Select} from 'antd';
 import {TrophyOutlined} from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
-import {useMediaQuery} from '@react-hook/media-query'     
+import {useMediaQuery} from '@react-hook/media-query'    
+const { Option } = Select; 
  
 export function SearchJobs(props) {
   let history = useHistory();
@@ -62,7 +63,7 @@ export function SearchJobs(props) {
                     <SearchFilter list={result?.aggregators?.type || []}
                         onChange={e => setFilters({...filters, type: e})}  />
                   </Card>
-                  <Card title="status" className="card-style"> 
+                  <Card title="Status" className="card-style"> 
                     <SearchFilter list={result?.aggregators?.status || []}
                         onChange={e => setFilters({...filters, status: e})}  />
                   </Card>
@@ -71,9 +72,8 @@ export function SearchJobs(props) {
               <Layout className="site-layout" >
               <Row  > 
                   <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                      <div className="fts-search-input-wrapper">
-                      Current Filters Row 
-                      </div>
+                    <FiltersComponent filters={filters || []} setFilters={setFilters}
+                        onChange={e => setFilters({...filters, status: e})}  />
                   </Card>
                 </Row>  
 
@@ -116,7 +116,7 @@ export function SearchJobs(props) {
                                       <SearchFilter list={result?.aggregators?.type || []}
                                           onChange={e => setFilters({...filters, type: e})}  />
                                     </Card>
-                                    <Card title="status" className="card-style"> 
+                                    <Card title="Status" className="card-style"> 
                                       <SearchFilter list={result?.aggregators?.status || []}
                                           onChange={e => setFilters({...filters, status: e})}  />
                                     </Card>
@@ -126,9 +126,8 @@ export function SearchJobs(props) {
                         </Col>
                         <Col  > 
                           <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                              <div className="fts-search-input-wrapper">
-                              Current Filters Row 
-                              </div>
+                              <FiltersComponent list={filters || []} setFilters={setFilters}
+                                onChange={e => setFilters({...filters, status: e})}  />
                           </Card>
                         </Col>  
 
@@ -141,9 +140,48 @@ export function SearchJobs(props) {
       </div>
   );
 } 
-function ResultComponent(props) {
 
-  console.log(".result: ", props.list) 
+function FiltersComponent(props) { 
+  console.log(".filters: ", props.filters) 
+  const selected_filters = [];
+  {props.filters.remote!= null && props.filters.remote.map(opt  =>  
+    selected_filters.push(<Option key={'Remote:'+ opt}>Remote: {opt}</Option>)  )} 
+  {props.filters.organization!= null && props.filters.organization.map(opt  =>  
+    selected_filters.push(<Option key={'Organization:'+ opt}>Organization: {opt}</Option>)  )} 
+  {props.filters.skill!= null && props.filters.skill.map(opt  =>  
+    selected_filters.push(<Option key={'Skill:'+ opt}>Skill: {opt}</Option>)  )} 
+  {props.filters.compensationrange!= null && props.filters.compensationrange.map(opt  =>  
+    selected_filters.push(<Option key={'Compensation:'+ opt}>Compensation: {opt}</Option>)  )}  
+  {props.filters.type!= null && props.filters.type.map(opt  =>  
+    selected_filters.push(<Option key={'Type:'+ opt}>Type: {opt}</Option>)  )}  
+  {props.filters.status!= null && props.filters.status.map(opt  =>  
+    selected_filters.push(<Option key={'Status:'+ opt}>Status: {opt}</Option>)  )}   
+  const defaultValue = [ "Remote:yes", "Remote:no","skill:Software Development"  ];
+  //selected_filters.map(filt  =>    defaultValue.push(  filt.key)  )
+  console.log(".defaultValue: ", defaultValue) 
+  console.log(".selected_filters: ", selected_filters) 
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+  const options = []; 
+  return <div className="fts-search-input-wrapper"   >
+            <h5 style= {{marginTop: 0}}>Current Filters Row </h5>
+            <Col  style= {{display: 'flex', marginLeft:'3%', color: 'white'}}>
+            <Select
+              mode="multiple"
+              allowClear
+              style={{ width: '100%' }} 
+              defaultValue={defaultValue} 
+              onChange={handleChange}
+              options={selected_filters} 
+              onClear={e => props.setFilters({  })}
+              />   
+            </Col>
+          </div>
+
+}  
+
+function ResultComponent(props) {
   return <Col xs={{span: 24}}> 
   { props.list.map(item  =>
   <Card   className="card-result"> 
@@ -178,7 +216,6 @@ function ResultComponent(props) {
 
 
 function SkillsComponet(props) {
-  console.log(".skills: ", props.list) 
   var obj = props.list;
   obj.sort((a,b) => b.experience.substr(0,1) - a.experience.substr(0,1)); 
   return <Col  style= {{display: 'flex', marginLeft:'10%'}}> 
@@ -200,7 +237,6 @@ function SkillsComponet(props) {
 }
 
 function MembersToComponet(props) {
-  console.log("Members: ", props.list)   
   return <Col  style= {{display: 'flex', marginLeft:'2%'}}>
       { props.list.map(members  =>
       <Image className="members-image" src={members.picture}/> 
@@ -221,7 +257,6 @@ function SearchFilter(props) {
 
 
 function SearchFilterLimit(props) {
-  console.log(".limit: ", props.limit)
   const options = props.list.slice(0, props.limit).map(item  => {
       return {
           label: `${item.value} (${item.total})`, value: item.value
@@ -231,22 +266,7 @@ function SearchFilterLimit(props) {
           onChange={props.onChange} />
 }
 
-/* 
-{
-
-  offset::::::::::::::::::::::::::::::::::::::    number
-  size: nubmer
-  aggreate: boolean,
-  openTo: Array de strings
-
-  other: {
-
-  }
-}
-
-*/
 function doQuery(params,filters) {
-
   console.log("filters:", filters)
 
   var requestOptions = {
@@ -259,12 +279,3 @@ function doQuery(params,filters) {
       .then(response => response.json())
       .catch(error => console.log('error', error));
 }
-
-/*function CurrentSelecteFilter(props) {
-  const options = props.list.map(item  => {
-      return {
-          label: `${item}`, value: item
-      }
-  })
-  return <Checkbox.Group style={{ width: '100%' }} options={options}   />
-}*/
