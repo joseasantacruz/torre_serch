@@ -1,6 +1,7 @@
 import React,{useMemo, useEffect, useState}  from 'react';
 import './App.css';
-import {Col, Row, Layout,Typography,Collapse,Card,Checkbox} from 'antd';
+import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image} from 'antd';
+import {TrophyOutlined} from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
 import {useMediaQuery} from '@react-hook/media-query'    
  
@@ -10,7 +11,7 @@ export function SearchPeople(props) {
   const [result, setResult] = useState()
   const [params, setParams] = useState( {
       offset: 0,
-      size: 0,
+      size: 20,
       aggregate: true
   })
   const [limit, setLimit] = useState(5)
@@ -26,7 +27,7 @@ export function SearchPeople(props) {
       <Layout>
             {!isSmall && <div className="layout-div">
               <Layout.Sider  >
-                  <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20, color: 'white',fontSize: '20px'  }}>
+                  <Typography.Title level={5} style={{textAlign:'left', paddingTop: 20, color: 'rgba(255, 255, 255, 0.90)',fontSize: '20px' ,background: 'hsla(0,0%,100%,.06)',margin: '0', padding: '12px 10px' }}>
                       People Filters
                   </Typography.Title>
                   <Col xs={{span: 24}} style={{padding: 5}}> 
@@ -69,7 +70,7 @@ export function SearchPeople(props) {
                   </Card>
                 </Row>  
 
-                <ResultComponent isSmall={isSmall}/>
+                <ResultComponent list={result?.results || []} />
               </Layout>
             </div>}
                 <Layout.Content className="content-padding" >
@@ -118,30 +119,61 @@ export function SearchPeople(props) {
                           </Card>
                         </Col>  
 
-                        <ResultComponent isSmall={isSmall}/>
+                        <ResultComponent list={result?.results || []} />
                     </Row>} 
                 </Layout.Content> 
           </Layout> 
       </div>
   );
 } 
+ 
+
 function ResultComponent(props) {
 
-  return <Col xs={{span: 24}}>
-      <Card title="Results" className="card-style">
-          <Col xs={{span: 24}}>   
-          <Row>
-            Results Row 1
-          </Row>
-          <Row>
-            Results Row 2
-          </Row>
-          </Col>
-      </Card>
-  </Col>
+  console.log(".result: ", props.list) 
+  return <Col xs={{span: 24}}> 
+  { props.list.map(item  =>
+  <Card   className="card-result"> 
+    <Row className="row-result">
+      <Col flex="100px">
+        <Image className="result-image" src={item.picture}/> 
+      </Col>
+      <Col className="result-col"flex="auto">
+        <h4 className="result-title">{item.name}</h4>
+        <span className="result-span-1">{item.professionalHeadline} <br /></span>
+        <span className="result-span-2">{item.locationName}</span>
+      </Col>
+    </Row>
+
+    <SkillsComponet list={item.skills || []} />
+  </Card> 
+  )}
+  </Col>  
+  
 } 
 
+
+function SkillsComponet(props) {
+  console.log(".skills: ", props.list) 
+  var obj = props.list;
+  obj.sort((a,b) => b.weight - a.weight); 
+  return <Col xs={{span: 6}} style= {{display: 'flex', marginLeft:'10%'}}> 
+      { obj.slice(0, 3).map(skill  =>
+      <Card   className="card-result-skills"> 
+      {skill.weight>0 && 
+        <span className="result-span-skills" > {skill.name}  <TrophyOutlined /> {skill.weight}</span>  
+      }
+      {!skill.weight>0 && 
+        <span className="result-span-skills" > {skill.name} </span>  
+      }
+      </Card> 
+      )}
+  </Col>  
+
+}
+
 function SearchFilter(props) {
+  console.log(".filters: ", props.list)
   const options = props.list.map(item  => {
       return {
           label: `${item.value} (${item.total})`, value: item.value
@@ -161,25 +193,8 @@ function SearchFilterLimit(props) {
   return <Checkbox.Group  options={options} 
           onChange={props.onChange} />
 }
-
-/* 
-{
-
-  offset::::::::::::::::::::::::::::::::::::::    number
-  size: nubmer
-  aggreate: boolean,
-  openTo: Array de strings
-
-  other: {
-
-  }
-}
-
-*/
 function doQuery(params,filters) {
-
   console.log("filters:", filters)
-
   var requestOptions = {
       method: 'POST',
       redirect: 'follow',
@@ -190,12 +205,3 @@ function doQuery(params,filters) {
       .then(response => response.json())
       .catch(error => console.log('error', error));
 }
-
-/*function CurrentSelecteFilter(props) {
-  const options = props.list.map(item  => {
-      return {
-          label: `${item}`, value: item
-      }
-  })
-  return <Checkbox.Group style={{ width: '100%' }} options={options}   />
-}*/

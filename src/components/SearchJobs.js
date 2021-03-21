@@ -29,7 +29,7 @@ export function SearchJobs(props) {
       <Layout>
             {!isSmall &&  <div className="layout-div">
               <Layout.Sider >
-                <Typography.Title level={5} style={{textAlign: 'center', paddingTop: 20, color: 'white',fontSize: '20px'  }}>
+              <Typography.Title level={5} style={{textAlign:'left', paddingTop: 20, color: 'rgba(255, 255, 255, 0.90)',fontSize: '20px' ,background: 'hsla(0,0%,100%,.06)',margin: '0', padding: '12px 10px' }}>
                     Jobs Filters
                 </Typography.Title>
                 <Col xs={{span: 24}} style={{padding: 5}}> 
