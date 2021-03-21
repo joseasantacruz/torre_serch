@@ -133,7 +133,7 @@ padding: 6%;
   padding: 5px;
   border-style: solid;
   border-radius: 10px;
-  border-color: #002E4D;
+  border-color: #CDDC39;
   border-width: 2px;
 }
 .card-style .title { 
@@ -280,3 +280,22 @@ font-size:20px;
   margin: 5px; 
 }
 
+.card-search{
+  color: rgba(255, 255, 255, 0.90)!important;
+}
+
+.button-style-2{
+background-color: #383B40;
+color: #CDDC39;
+margin-top: 3%;
+margin-left: 60%;
+padding: 2%;
+display: table;
+border-radius: 5px;
+text-decoration: none;
+}
+.members-image{
+  width: 30px;
+  border-radius: 60%;
+  padding: 7%;
+}

@@ -1,8 +1,9 @@
 import React,{useMemo, useEffect, useState}  from 'react';
 import './App.css';
-import {Col, Row, Layout,Typography,Collapse,Card,Checkbox} from 'antd';
+import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image} from 'antd';
+import {TrophyOutlined} from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
-import {useMediaQuery} from '@react-hook/media-query'
+import {useMediaQuery} from '@react-hook/media-query'     
  
 export function SearchJobs(props) {
   let history = useHistory();
@@ -10,7 +11,7 @@ export function SearchJobs(props) {
   const [result, setResult] = useState()
   const [params, setParams] = useState( {
       offset: 0,
-      size: 0,
+      size: 20,
       aggregate: true
   })
 
@@ -68,15 +69,7 @@ export function SearchJobs(props) {
                 </Col>
             </Layout.Sider>
               <Layout className="site-layout" >
-                <Row  > 
-                  <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                      <div className="fts-search-input-wrapper">
-                        
-                        input to Search jobs
-                      </div>
-                  </Card>
-                </Row>  
-                <Row  > 
+              <Row  > 
                   <Card className="card-style card-fts-search"  style={{width: '100%'}}>
                       <div className="fts-search-input-wrapper">
                       Current Filters Row 
@@ -84,7 +77,7 @@ export function SearchJobs(props) {
                   </Card>
                 </Row>  
 
-                <ResultComponent isSmall={isSmall}/>
+                <ResultComponent list={result?.results || []} /> 
               </Layout>
             </div>} 
                 <Layout.Content className="content-padding" >
@@ -134,20 +127,12 @@ export function SearchJobs(props) {
                         <Col  > 
                           <Card className="card-style card-fts-search"  style={{width: '100%'}}>
                               <div className="fts-search-input-wrapper">
-                                
-                                input to Search people
-                              </div>
-                          </Card>
-                        </Col>  
-                        <Col  > 
-                          <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                              <div className="fts-search-input-wrapper">
                               Current Filters Row 
                               </div>
                           </Card>
                         </Col>  
 
-                        <ResultComponent isSmall={isSmall}/>
+                        <ResultComponent list={result?.results || []} />
                     </Row>}
                      
                 </Layout.Content> 
@@ -158,20 +143,71 @@ export function SearchJobs(props) {
 } 
 function ResultComponent(props) {
 
-  return <Col xs={{span: 24}}>
-      <Card title="Results" className="card-style">
-          <Col xs={{span: 24}}>   
-          <Row>
-            Results Row 1
-          </Row>
-          <Row>
-            Results Row 2
-            
-          </Row>
-          </Col>
-      </Card>
-  </Col>
+  console.log(".result: ", props.list) 
+  return <Col xs={{span: 24}}> 
+  { props.list.map(item  =>
+  <Card   className="card-result"> 
+    <Row className="row-result">
+      <Col flex="100px">
+        {item.organizations.slice(0,1).map(organization  => <Image className="result-image" src={organization.picture}/> )}   
+      </Col>
+      <Col className="result-col"flex="auto">
+        <h4 className="result-title">{item.objective}</h4>
+        <span className="result-span-1">{item.type} <br /></span>
+        {item.organizations.map(organization  =><span className="result-span-1">{organization.name}<br /> </span>)}  
+        {item.remote && <span className="result-span-1">Remote<br /></span>}
+        {item.compensation.visible && <span  style={{marginTop: '4%'}}>{item.compensation.data.currency} {item.compensation.data.minAmount}
+        -{item.compensation.data.maxAmount}/{item.compensation.data.periodicity}</span>}
+        {!item.compensation.visible && <span  style={{marginTop: '4%'}}>Compensation: hidden</span>}
+      </Col>
+    </Row> 
+    <Row className="row-result" style={{marginLeft:'10%',marginTop:'2%',color: 'rgba(255, 255, 255, 0.65)'}}>
+      <Col flex="65px">
+      <p>Members:</p>
+      </Col>
+      <Col className="result-col"flex="auto" style={{margin:'0%',marginTop:'2%'}}>
+      <MembersToComponet list={item.members || []} />
+      </Col>
+    </Row>
+    <SkillsComponet list={item.skills || []} />
+    <a className="button-style-2" href=""> VIEW </a> 
+  </Card>
+  )}
+  </Col>  
 } 
+
+
+function SkillsComponet(props) {
+  console.log(".skills: ", props.list) 
+  var obj = props.list;
+  obj.sort((a,b) => b.experience.substr(0,1) - a.experience.substr(0,1)); 
+  return <Col  style= {{display: 'flex', marginLeft:'10%'}}> 
+      { props.list.slice(0, 3).map(skill  =>
+      <Card   className="card-result-skills"> 
+      {skill.experience!="potential-to-develop" && 
+        <span className="result-span-skills" > {skill.name}  - +{skill.experience.substr(0,1)} 
+        {skill.experience.substr(0,1)!=1 && <span className="result-span-skills" > years</span>}
+        {skill.experience.substr(0,1)==1 && <span className="result-span-skills" > year</span>}
+        </span> 
+      }
+      {skill.experience=="potential-to-develop" && 
+        <span className="result-span-skills" > {skill.name} </span>  
+      }
+      </Card> 
+      )}
+  </Col>  
+
+}
+
+function MembersToComponet(props) {
+  console.log("Members: ", props.list)   
+  return <Col  style= {{display: 'flex', marginLeft:'2%'}}>
+      { props.list.map(members  =>
+      <Image className="members-image" src={members.picture}/> 
+      )}
+  </Col> 
+
+}
 
 function SearchFilter(props) {
   const options = props.list.map(item  => {

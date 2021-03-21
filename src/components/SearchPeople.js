@@ -3,8 +3,8 @@ import './App.css';
 import {Col, Row, Layout,Typography,Collapse,Card,Checkbox,Image} from 'antd';
 import {TrophyOutlined} from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
-import {useMediaQuery} from '@react-hook/media-query'    
- 
+import {useMediaQuery} from '@react-hook/media-query'     
+
 export function SearchPeople(props) {
   let history = useHistory();
 
@@ -53,15 +53,7 @@ export function SearchPeople(props) {
                     </Card>
                   </Col> 
               </Layout.Sider>
-              <Layout className="site-layout" >
-                <Row  > 
-                  <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                      <div className="fts-search-input-wrapper">
-                        
-                        input to Search people
-                      </div>
-                  </Card>
-                </Row>  
+              <Layout className="site-layout" > 
                 <Row  > 
                   <Card className="card-style card-fts-search"  style={{width: '100%'}}>
                       <div className="fts-search-input-wrapper">
@@ -102,15 +94,7 @@ export function SearchPeople(props) {
                                   </Col>
                                 </Collapse.Panel>
                             </Collapse>
-                        </Col>
-                        <Col  > 
-                          <Card className="card-style card-fts-search"  style={{width: '100%'}}>
-                              <div className="fts-search-input-wrapper">
-                                
-                                input to Search people
-                              </div>
-                          </Card>
-                        </Col>  
+                        </Col> 
                         <Col  > 
                           <Card className="card-style card-fts-search"  style={{width: '100%'}}>
                               <div className="fts-search-input-wrapper">
@@ -127,7 +111,6 @@ export function SearchPeople(props) {
   );
 } 
  
-
 function ResultComponent(props) {
 
   console.log(".result: ", props.list) 
@@ -144,20 +127,38 @@ function ResultComponent(props) {
         <span className="result-span-2">{item.locationName}</span>
       </Col>
     </Row>
-
     <SkillsComponet list={item.skills || []} />
-  </Card> 
+    <Row className="row-result" style={{marginLeft:'10%',marginTop:'2%',color: 'rgba(255, 255, 255, 0.65)'}}>
+      <Col flex="65px">
+      <p>Open To:</p>
+      </Col>
+      <Col className="result-col"flex="auto" style={{margin:'0%',marginTop:'2%'}}>
+        <OpenToComponet list={item.openTo || []} />
+      </Col>
+    </Row>
+    <a className="button-style-2" href=""> VIEW GENOMA</a> 
+  </Card>
   )}
   </Col>  
-  
 } 
+
+function OpenToComponet(props) {
+  console.log(".openTo: ", props.list)   
+  return <Card style={{ width: 300 }}> 
+      { props.list.map(opento  =>
+      
+      <p style={{ margin:'0%' }}>{opento}</p> 
+      )}
+  </Card> 
+
+}
 
 
 function SkillsComponet(props) {
   console.log(".skills: ", props.list) 
   var obj = props.list;
   obj.sort((a,b) => b.weight - a.weight); 
-  return <Col xs={{span: 6}} style= {{display: 'flex', marginLeft:'10%'}}> 
+  return <Col  style= {{display: 'flex', marginLeft:'10%'}}> 
       { obj.slice(0, 3).map(skill  =>
       <Card   className="card-result-skills"> 
       {skill.weight>0 && 
