@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/torre_serch/static/css/main.361f4b91.chunk.css",
+    "main.js": "/torre_serch/static/js/main.3af79aee.chunk.js",
+    "main.js.map": "/torre_serch/static/js/main.3af79aee.chunk.js.map",
+    "runtime-main.js": "/torre_serch/static/js/runtime-main.7ba279aa.js",
+    "runtime-main.js.map": "/torre_serch/static/js/runtime-main.7ba279aa.js.map",
+    "static/js/2.6e08d17e.chunk.js": "/torre_serch/static/js/2.6e08d17e.chunk.js",
+    "static/js/2.6e08d17e.chunk.js.map": "/torre_serch/static/js/2.6e08d17e.chunk.js.map",
+    "static/js/3.957f847c.chunk.js": "/torre_serch/static/js/3.957f847c.chunk.js",
+    "static/js/3.957f847c.chunk.js.map": "/torre_serch/static/js/3.957f847c.chunk.js.map",
+    "index.html": "/torre_serch/index.html",
+    "static/css/main.361f4b91.chunk.css.map": "/torre_serch/static/css/main.361f4b91.chunk.css.map",
+    "static/js/2.6e08d17e.chunk.js.LICENSE.txt": "/torre_serch/static/js/2.6e08d17e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7ba279aa.js",
+    "static/js/2.6e08d17e.chunk.js",
+    "static/css/main.361f4b91.chunk.css",
+    "static/js/main.3af79aee.chunk.js"
+  ]
+}
